@@ -21,7 +21,7 @@ export default function InvoiceForm({ data, setData }) {
 
   return (
     <div className="container my-3 my-md-4">
-      <h4 className="mb-3 mb-md-4">Invoice Input</h4>
+      <h4 className="mb-3 mb-md-4">Document Input</h4>
 
       {/* Form Header Section - Responsive Grid */}
       <div className="row g-3 mb-4">
@@ -34,6 +34,7 @@ export default function InvoiceForm({ data, setData }) {
             >
               <option value="quotation">Quotation</option>
               <option value="invoice">Invoice</option>
+              <option value="device-received">Device Received Acknowledgement Slip</option>
             </Form.Select>
           </Form.Group>
         </div>
@@ -54,11 +55,13 @@ export default function InvoiceForm({ data, setData }) {
             <Form.Label>
               {data.type === "invoice"
                 ? "Invoice Serial Number"
-                : "Quotation Serial Number"}
+                : data.type === "quotation"
+                ? "Quotation Serial Number"
+                : "Acknowledgement Serial Number"}
             </Form.Label>
             <Form.Control
               type="number"
-              placeholder="Enter serial (e.g. 001)"
+              placeholder="Enter serial/reference (e.g. 001)"
               value={data.serial}
               onChange={(e) => setData({ ...data, serial: e.target.value })}
             />
@@ -113,44 +116,14 @@ export default function InvoiceForm({ data, setData }) {
                 </Form.Group>
               </div>
 
-              {/* Total - Hidden on extra small, shown on sm+ */}
-              <div className="col-3 col-md-2 d-none d-md-block">
-                <Form.Group>
-                  <Form.Label className="small fw-bold text-muted text-uppercase" style={{ fontSize: '0.75rem' }}>Total</Form.Label>
-                  <div className="form-control-plaintext fw-bold text-dark">
-                    {(item.qty * item.price).toFixed(2)}
-                  </div>
-                </Form.Group>
-              </div>
-
-              {/* Remove Button - Absolute on mobile? No, let's keep it in flow but aligned */}
-              <div className="col-3 col-md-12 d-flex justify-content-end d-md-none align-self-center mt-2">
-                <Button
-                  variant="outline-danger"
-                  size="sm"
-                  onClick={() => removeItem(i)}
-                  aria-label="Remove item"
-                >
-                  <i className="bi bi-trash"></i> &#10005;
-                </Button>
-              </div>
-              {/* Desktop Remove Button (in strict grid) */}
-              {/* Actually the previous design had remove button below. Let's make it cleaner. */}
-            </div>
-
-            {/* Row 2 for Desktop Actions or Mobile Total */}
-            <div className="row mt-2 align-items-center">
-              <div className="col-6 d-md-none">
-                <span className="small text-muted me-2">Subtotal:</span>
-                <span className="fw-bold text-primary">{(item.qty * item.price).toFixed(2)}</span>
-              </div>
-              <div className="col-6 col-md-12 d-flex justify-content-end">
+              {/* Remove Button */}
+              <div className="col-12 mt-2">
                 <Button
                   variant="link"
-                  className="text-danger p-0 text-decoration-none small d-none d-md-block"
+                  className="text-danger p-0 text-decoration-none small"
                   onClick={() => removeItem(i)}
                 >
-                  Remove Item
+                  <i className="bi bi-trash"></i> Remove Item
                 </Button>
               </div>
             </div>

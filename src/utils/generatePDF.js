@@ -56,7 +56,12 @@ export const generatePDF = async (data) => {
       heightLeft -= pdfHeight;
     }
 
-    const type = data.type === "invoice" ? "invoice" : "quotation";
+    const type =
+      data.type === "invoice"
+        ? "invoice"
+        : data.type === "quotation"
+        ? "quotation"
+        : "acknowledgement";
     const timestamp = new Date().toISOString().split("T")[0];
 
     const customerName = data.customer
